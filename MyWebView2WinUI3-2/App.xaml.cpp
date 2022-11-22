@@ -44,3 +44,32 @@ void App::OnLaunched(LaunchActivatedEventArgs const&)
     window = make<MainWindow>();
     window.Activate();
 }
+
+int __stdcall wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
+{
+
+	{
+		void (WINAPI * pfnXamlCheckProcessRequirements)();
+		auto module = ::LoadLibrary(L"Microsoft.ui.xaml.dll");
+		if (module)
+		{
+			pfnXamlCheckProcessRequirements = reinterpret_cast<decltype(pfnXamlCheckProcessRequirements)>(GetProcAddress(module, "XamlCheckProcessRequirements"));
+			if (pfnXamlCheckProcessRequirements)
+			{
+				(*pfnXamlCheckProcessRequirements)();
+			}
+
+			// ::FreeLibrary(module); // Usually this should be uncommented, but it's commented due to https://github.com/microsoft/WindowsAppSDK/issues/3117#issuecomment-1314945705.
+		}
+	}
+
+
+	winrt::init_apartment(winrt::apartment_type::single_threaded);
+	::winrt::Microsoft::UI::Xaml::Application::Start(
+		[](auto&&)
+		{
+			::winrt::make<::winrt::MyWebView2WinUI3_2::implementation::App>();
+		});
+
+	return 0;
+}

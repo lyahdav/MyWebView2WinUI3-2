@@ -29,6 +29,6 @@ namespace winrt::MyWebView2WinUI3_2::implementation
 
     void MainWindow::myButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
-        myButton().Content(box_value(L"Clicked"));
+        //myButton().Content(box_value(L"Clicked"));
     }
 }

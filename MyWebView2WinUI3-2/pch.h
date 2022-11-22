@@ -1,4 +1,7 @@
 ﻿#pragma once
+
+#define DISABLE_XAML_GENERATED_MAIN
+
 #include <windows.h>
 #include <unknwn.h>
 #include <restrictederrorinfo.h>
