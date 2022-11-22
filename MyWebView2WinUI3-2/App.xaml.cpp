@@ -3,11 +3,14 @@
 #include "App.xaml.h"
 #include "MainWindow.xaml.h"
 
+#include <MddBootstrap.h>
+#include <WindowsAppSDK-VersionInfo.h>
+
 using namespace winrt;
 using namespace Windows::Foundation;
-using namespace Microsoft::UI::Xaml;
-using namespace Microsoft::UI::Xaml::Controls;
-using namespace Microsoft::UI::Xaml::Navigation;
+using namespace winrt::Microsoft::UI::Xaml;
+using namespace winrt::Microsoft::UI::Xaml::Controls;
+using namespace winrt::Microsoft::UI::Xaml::Navigation;
 using namespace MyWebView2WinUI3_2;
 using namespace MyWebView2WinUI3_2::implementation;
 
@@ -47,6 +50,10 @@ void App::OnLaunched(LaunchActivatedEventArgs const&)
 
 int __stdcall wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
 {
+	winrt::init_apartment(winrt::apartment_type::single_threaded);
+
+	winrt::check_hresult(
+		MddBootstrapInitialize(WINDOWSAPPSDK_RELEASE_MAJORMINOR, WINDOWSAPPSDK_RELEASE_VERSION_TAG_W, PACKAGE_VERSION{}));
 
 	{
 		void (WINAPI * pfnXamlCheckProcessRequirements)();
@@ -59,12 +66,10 @@ int __stdcall wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
 				(*pfnXamlCheckProcessRequirements)();
 			}
 
-			// ::FreeLibrary(module); // Usually this should be uncommented, but it's commented due to https://github.com/microsoft/WindowsAppSDK/issues/3117#issuecomment-1314945705.
+			::FreeLibrary(module);
 		}
 	}
 
-
-	winrt::init_apartment(winrt::apartment_type::single_threaded);
 	::winrt::Microsoft::UI::Xaml::Application::Start(
 		[](auto&&)
 		{
