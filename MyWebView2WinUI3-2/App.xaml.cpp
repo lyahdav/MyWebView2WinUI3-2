@@ -50,6 +50,8 @@ void App::OnLaunched(LaunchActivatedEventArgs const&)
 
 int __stdcall wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
 {
+	SetEnvironmentVariable(L"WEBVIEW2_USER_DATA_FOLDER", L"C:\\Temp\\WinUI3WebView2Example-UserData");
+
 	winrt::init_apartment(winrt::apartment_type::single_threaded);
 
 	winrt::check_hresult(
